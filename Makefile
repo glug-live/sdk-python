@@ -1,4 +1,4 @@
-.PHONY: install lint format test
+.PHONY: install lint format test docs
 
 SHELL := bash
 
@@ -6,6 +6,7 @@ BLACK := poetry run black
 PYLINT := poetry run pylint
 MYPY := poetry run mypy
 PYTEST := poetry run pytest -v
+PDOC := poetry run pdoc
 
 install:
 	@poetry install
@@ -23,3 +24,6 @@ format:
 
 test:
 	${PYTEST}
+
+docs:
+	${PDOC} --force --html --template-dir docs-templates --output-dir docs directus
