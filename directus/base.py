@@ -51,6 +51,12 @@ class BaseAPI(metaclass=ABCMeta):
         """
         return urljoin(self.url, endpoint.format(project=self.project))
 
+    def get(self, url, **kwargs):
+        """
+        Perfom a GET request on the Directus API.
+        """
+        return self.session.get(self._enpoint_url(url), **kwargs)
+
     def post(self, url, **kwargs):
         """
         Perfom a POST request on the Directus API.
