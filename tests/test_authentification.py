@@ -6,7 +6,6 @@ from directus import Directus
 
 def test_authentication_authenticate(client: Directus):
     body = {"email": "admin@example.com", "password": "password"}
-    res = client.authenticate(data=body)
+    res = client.auth_authenticate(data=body)
     assert loads(res.request.body) == body
-    print(res.content)
-    assert res.status_code == 201
+    assert res.status_code == 200
