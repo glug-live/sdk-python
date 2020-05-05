@@ -492,7 +492,7 @@ class DirectusClient:
         params = {"data": data}
 
         if filename_download:
-            params["filename_downlad"] = filename_download
+            params["filename_download"] = filename_download
         if title:
             params["title"] = title
         if description:
