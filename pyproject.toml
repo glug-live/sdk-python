@@ -9,7 +9,7 @@ repository = "https://github.com/directus/sdk-python"
 [tool.poetry.dependencies]
 python = "^3.7"
 pyjwt = "^1.7.1"
-requests = "^2.23.0"
+requests = "^2.24.0"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
