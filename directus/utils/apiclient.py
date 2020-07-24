@@ -69,6 +69,7 @@ class ApiClient(object):
         data: RequestData,
         headers: RequestHeaders = {},
         meta: RequestMeta = [],
+        auth_refresh: bool = False,
     ) -> Tuple[dict, ResponseMeta]:
         headers = {**self.baseHeader, **headers}
         params = {"meta": ",".join(meta)}
@@ -78,6 +79,7 @@ class ApiClient(object):
             headers=headers,
             data=data,
             params=params,
+            auth_refresh=auth_refresh,
         )
 
         if not response:
@@ -133,8 +135,10 @@ class ApiClient(object):
         headers: RequestHeaders,
         data: RequestData = {},
         params: RequestParams = {},
+        auth_refresh: bool = False,
     ) -> Optional[Response]:
-        self._auto_refresh_token()
+        if not auth_refresh:  # don't refresh a refresh
+            self._auto_refresh_token()
         response = request(
             method=method, url=url, headers=headers, json=data, params=params
         )
@@ -155,7 +159,7 @@ class ApiClient(object):
 
         if self.token and int(decoded_token["exp"] - 60) < int(time()):
             new_token, _ = self.do_post(
-                "/".join(["auth", "refresh"]), data={"token": self.token}
+                "/".join(["auth", "refresh"]), data={"token": self.token}, auth_refresh=True
             )
             self.token = new_token["token"]
-            self.baseHeader["token"] = new_token["token"]
+            self.baseHeader["authorization"] = f"Bearer {self.token}"  # reset authorization header
