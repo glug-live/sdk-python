@@ -447,6 +447,10 @@ class DirectusClient:
             "q": q,
         }
 
+        # reassemble filter parameter key-value pairs in API format
+        for k, v in params.pop("filter").items():
+            params["filter{}".format(k)] = v
+
         response_data, response_meta = self.ApiClient.do_get(
             path, params=params, meta=meta
         )
