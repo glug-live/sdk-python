@@ -50,10 +50,10 @@ class DirectusClient:
         if not project:
             raise DirectusException("You must provide a project")
 
-        if not email and password:
+        if not email:
             raise DirectusException("You must provide an email")
 
-        if not password and email:
+        if not password:
             raise DirectusException("You must provide a password")
 
         self.ApiClient = ApiClient(
