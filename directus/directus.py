@@ -473,6 +473,7 @@ class DirectusClient:
         self,
         data: str,
         filename_download: Optional[str] = None,
+        filename_disk: Optional[str] = None,  # required for base64 string of file data
         title: Optional[str] = None,
         description: Optional[str] = None,
         location: Optional[str] = None,
@@ -493,6 +494,8 @@ class DirectusClient:
 
         if filename_download:
             params["filename_download"] = filename_download
+        if filename_disk:
+            params["filename_disk"] = filename_disk
         if title:
             params["title"] = title
         if description:
