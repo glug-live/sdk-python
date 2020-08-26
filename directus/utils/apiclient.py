@@ -133,7 +133,7 @@ class ApiClient(object):
         method: str,
         url: str,
         headers: RequestHeaders,
-        data: RequestData = {},
+        data: RequestData = None,
         params: RequestParams = {},
         auth_refresh: bool = False,
     ) -> Optional[Response]:
