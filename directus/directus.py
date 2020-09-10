@@ -9,6 +9,9 @@ from .typing import (
     RequestMeta,
     RequestFields,
     ResponseMeta,
+    User,
+    Role,
+    Permission,
     Collection,
     Item,
     Revision,
@@ -186,10 +189,12 @@ class DirectusClient:
             "offset": offset,
             "sort": ",".join(sort),
             "single": single,
-            "filter": filter,
             "status": status,
             "q": q,
         }
+        if filter:
+            for filter_key in filter.keys():
+                params[f"filter{filter_key}"] = filter[filter_key]
 
         if page:
             params["page"] = page
@@ -544,3 +549,204 @@ class DirectusClient:
             "data": data,
         }
         return self.ApiClient.do_post(path=path, data=params)
+
+    """
+
+    Users
+    https://docs.directus.io/api/users.html
+
+    """
+    def get_users_list(
+        self,
+        fields: RequestFields = ["*"],
+        page: Optional[int] = None,
+        limit: int = 100,
+        offset: int = 0,
+        sort: List[str] = ["id"],
+        single: bool = False,
+        filter: dict = {},
+        q: Optional[str] = None,
+        meta: RequestMeta = [],
+    ) -> Tuple[List[User], ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/users.html#list-the-users
+
+        If page is set, offset is not taken into account
+
+        If single, only return first corresponding result from list
+
+        Returns
+        -------
+            (List of User, Metadata)
+        """
+        path = "users"
+
+        params = {
+            "fields": ",".join(fields),
+            "limit": limit,
+            "offset": offset,
+            "sort": ",".join(sort),
+            "single": single,
+            "q": q,
+        }
+        if filter:
+            for filter_key in filter.keys():
+                params[f"filter{filter_key}"] = filter[filter_key]
+
+        if page:
+            params["page"] = page
+            del params["offset"]
+
+        response_data, response_meta = self.ApiClient.do_get(
+            path, params=params, meta=meta
+        )
+
+        return list(response_data), response_meta
+
+    def create_user(
+        self, user: User, meta: RequestMeta = []
+    ) -> Tuple[User, ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/users.html#create-a-user
+
+        Returns
+        -------
+            (User, Metadata)
+        """
+        path = "users"
+
+        return self.ApiClient.do_post(path=path, data=user, meta=meta)
+
+    """
+
+    Roles
+    https://docs.directus.io/api/roles.html
+
+    """
+    def get_roles_list(
+        self,
+        fields: RequestFields = ["*"],
+        page: Optional[int] = None,
+        limit: int = 100,
+        offset: int = 0,
+        sort: List[str] = ["id"],
+        single: bool = False,
+        filter: dict = {},
+        q: Optional[str] = None,
+        meta: RequestMeta = [],
+    ) -> Tuple[List[Role], ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/roles.html#list-the-roles
+
+        If page is set, offset is not taken into account
+
+        If single, only return first corresponding result from list
+
+        Returns
+        -------
+            (List of Role, Metadata)
+        """
+        path = "roles"
+
+        params = {
+            "fields": ",".join(fields),
+            "limit": limit,
+            "offset": offset,
+            "sort": ",".join(sort),
+            "single": single,
+            "q": q,
+        }
+        if filter:
+            for filter_key in filter.keys():
+                params[f"filter{filter_key}"] = filter[filter_key]
+
+        if page:
+            params["page"] = page
+            del params["offset"]
+
+        response_data, response_meta = self.ApiClient.do_get(
+            path, params=params, meta=meta
+        )
+
+        return list(response_data), response_meta
+
+    def create_role(
+        self, role: Role, meta: RequestMeta = []
+    ) -> Tuple[Role, ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/roles.html#create-a-role
+
+        Returns
+        -------
+            (Role, Metadata)
+        """
+        path = "roles"
+
+        return self.ApiClient.do_post(path=path, data=role, meta=meta)
+
+    """
+
+    Permissions
+    https://docs.directus.io/api/permissions.html
+
+    """
+    def get_permissions_list(
+        self,
+        fields: RequestFields = ["*"],
+        page: Optional[int] = None,
+        limit: int = 100,
+        offset: int = 0,
+        sort: List[str] = ["id"],
+        single: bool = False,
+        filter: dict = {},
+        q: Optional[str] = None,
+        meta: RequestMeta = [],
+    ) -> Tuple[List[Permission], ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/permissions.html#list-the-permissions
+
+        If page is set, offset is not taken into account
+
+        If single, only return first corresponding result from list
+
+        Returns
+        -------
+            (List of Permission, Metadata)
+        """
+        path = "permissions"
+
+        params = {
+            "fields": ",".join(fields),
+            "limit": limit,
+            "offset": offset,
+            "sort": ",".join(sort),
+            "single": single,
+            "q": q,
+        }
+        if filter:
+            for filter_key in filter.keys():
+                params[f"filter{filter_key}"] = filter[filter_key]
+
+        if page:
+            params["page"] = page
+            del params["offset"]
+
+        response_data, response_meta = self.ApiClient.do_get(
+            path, params=params, meta=meta
+        )
+
+        return list(response_data), response_meta
+
+    def create_permissions(
+        self, permissions: Permission, meta: RequestMeta = []
+    ) -> Tuple[Permission, ResponseMeta]:
+        """
+        Find out more: https://docs.directus.io/api/permissions.html#create-a-permission
+
+        Returns
+        -------
+            (Permission, Metadata)
+        """
+        path = "permissions"
+
+        return self.ApiClient.do_post(path=path, data=permissions, meta=meta)
